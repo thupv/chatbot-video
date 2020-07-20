@@ -1,49 +1,70 @@
 import FiniteStateMachineBot from "./FiniteStateMachineBot";
+import { searchChannels, searchVideos } from "../services/Youtube";
 
 const CONVERSATION_FLOW = [
   {
     id: "greetings",
     response: {
-      messages: [
-        "Select category you want to search"
-      ],
+      messages: ["Select category you want to search"],
       buttons: [
         {
           state: "searchChannel",
-          display: "youtube channel"
+          display: "youtube channel",
         },
         {
           state: "searchVideo",
-          display: "youtube video"
-        }
-      ]
-    }
+          display: "youtube video",
+        },
+      ],
+    },
   },
   {
     id: "searchChannel",
     response: {
-      messages: [
-        "Type channel you want to search",
-      ],
+      messages: ["Type channel you want to search"],
       buttons: [],
-      nextState: 'onSearching'
-    }
+      nextState: "onSearchingChannels",
+    },
   },
   {
     id: "searchVideo",
     response: {
-      messages: [
-        "Type video you want to search",
-      ],
+      messages: ["Type video you want to search"],
       buttons: [],
-      nextState: 'onSearching'
-    }
+      nextState: "onSearchingVideos",
+    },
   },
   {
-    id: 'onSearching',
+    id: "onSearchingChannels",
     response: (text) => {
-      return Promise.resolve({messages: ['async message ' + text]});
-    }
+      return searchChannels(text)
+        .then((channels) => {
+          return {
+            messages: channels,
+          };
+        })
+        .catch(() => {
+          return {
+            messages: [],
+          };
+        });
+    },
+  },
+  {
+    id: "onSearchingVideos",
+    response: (text) => {
+      return searchVideos(text)
+        .then((videos) => {
+          return {
+            messages: videos,
+          };
+        })
+        .catch(() => {
+          return {
+            messages: [],
+          };
+        });
+    },
   },
   {
     id: "incomprehension",
@@ -52,14 +73,14 @@ const CONVERSATION_FLOW = [
       buttons: [
         {
           state: "greetings",
-          display: "greetings"
-        }
-      ]
-    }
-  }
+          display: "greetings",
+        },
+      ],
+    },
+  },
 ];
 
-const createYoutubeSearchChatBot = user => {
+const createYoutubeSearchChatBot = (user) => {
   return new FiniteStateMachineBot(CONVERSATION_FLOW);
 };
 
