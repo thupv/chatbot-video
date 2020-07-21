@@ -33,7 +33,7 @@ app.use(apiPrefix, routes)
 app.use(errorHandler)
 
 const setup = async () => {
-  await connectDb()
+  // await connectDb()
   const server = app.listen(serverPort, () => logger.info(formatLog(`The server was started on http://localhost:${serverPort}`)))
   startWebSocketServer(server)
 }

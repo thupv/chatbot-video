@@ -1,13 +1,3 @@
-/*
-rigwild's personal ESLint configuration
-Using modern JavaScript syntax, very restrictive.
-Preferably use with autofix on save.
-
-This config is made for a Babel + Vue.js project (vue-cli).
-
-https://github.com/rigwild
-*/
-
 // prettier-ignore
 module.exports = {
   parserOptions: {

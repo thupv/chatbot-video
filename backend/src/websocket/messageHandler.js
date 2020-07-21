@@ -13,7 +13,6 @@ const messageHandler = ws => async data => {
     throw new Error('Invalid JSON data.')
   }
 
-  // if (!TEST_MODE) wsLogger.info(formatLog(json, 'message'))
   ws.send('{"message":"ok"}')
 }
 

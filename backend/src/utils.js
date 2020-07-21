@@ -18,7 +18,6 @@ export const errorHandler = (err, req, res, next) => {
     else if (err.name === 'UnauthorizedError')
       err = boom.unauthorized(err)
     else {
-      // The error was not recognized, send a 500 HTTP error
       err = boom.internal(err)
     }
   }
